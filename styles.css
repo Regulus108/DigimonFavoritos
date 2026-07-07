@@ -104,7 +104,7 @@ body {
     gap: 8px;
 }
 
-.level-btn, .attribute-btn, .armor-evolution-btn, .hybrid-evolution-btn, .x-evolution-btn {
+.level-btn, .attribute-btn, .special-type-btn, .armor-evolution-btn, .hybrid-evolution-btn, .x-evolution-btn {
     padding: 8px 12px;
     border: 2px solid #7c3aed;
     background: linear-gradient(135deg, #2d1b4e 0%, #3a2a5a 100%);
@@ -116,14 +116,14 @@ body {
     font-weight: bold;
 }
 
-.level-btn:hover, .attribute-btn:hover {
+.level-btn:hover, .attribute-btn:hover, .special-type-btn:hover {
     background: linear-gradient(135deg, #4a3a6a 0%, #5a4a7a 100%);
     border-color: #a855f7;
     box-shadow: 0 0 10px rgba(168, 85, 247, 0.4);
     color: #e9d5ff;
 }
 
-.level-btn.active, .attribute-btn.active {
+.level-btn.active, .attribute-btn.active, .special-type-btn.active {
     background: linear-gradient(135deg, #a855f7 0%, #d946ef 100%);
     color: #faf5ff;
     border-color: #f472b6;
@@ -201,10 +201,12 @@ body {
 }
 
 .digimon-name {
-    font-size: 12px;
+    font-size: 13px;
     font-weight: bold;
-    color: #a855f7;
+    color: #e9d5ff;
     word-wrap: break-word;
+    line-height: 1.3;
+    text-shadow: 0 0 5px rgba(168, 85, 247, 0.3);
 }
 
 /* ===== IMAGE PREVIEW ON HOVER ===== */
@@ -268,7 +270,7 @@ body {
     gap: 10px;
 }
 
-.save-btn, .delete-btn {
+.delete-btn {
     padding: 10px 20px;
     border: 2px solid #a855f7;
     border-radius: 5px;
@@ -276,20 +278,6 @@ body {
     cursor: pointer;
     transition: all 0.3s ease;
     font-size: 14px;
-}
-
-.save-btn {
-    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-    color: white;
-    text-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
-}
-
-.save-btn:hover {
-    background: linear-gradient(135deg, #059669 0%, #047857 100%);
-    box-shadow: 0 0 15px rgba(16, 185, 129, 0.5);
-}
-
-.delete-btn {
     background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
     color: white;
     text-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
