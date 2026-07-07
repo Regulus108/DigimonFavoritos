@@ -11,10 +11,7 @@ let yearlyFavorites = {
     1998: [],
     1999: [],
     2000: [],
-    2001: [],
-    2002: [],
-    2003: [],
-    2003: []
+    2001: []
 };
 
 let currentContextDigimon = null;
@@ -79,8 +76,7 @@ function setupEventListeners() {
         });
     });
 
-    // Save and Delete buttons
-    document.getElementById('saveBtn').addEventListener('click', saveFavorites);
+    // Delete button
     document.getElementById('deleteBtn').addEventListener('click', deleteFavorites);
 
     // Close alternative window when clicking outside
@@ -467,18 +463,6 @@ function createYearlySlots(year, yearFavorites) {
 function closeAlternativeWindow() {
     document.getElementById('alternativeWindow').classList.remove('visible');
     currentContextDigimon = null;
-}
-
-function saveFavorites() {
-    const data = { yearlyFavorites };
-    const json = JSON.stringify(data, null, 2);
-    const blob = new Blob([json], { type: 'application/json' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = 'digimon-favorites.json';
-    a.click();
-    URL.revokeObjectURL(url);
 }
 
 function deleteFavorites() {
