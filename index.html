@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Digimon Favorites Selector</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Left Sidebar - Years Filter -->
+        <aside class="sidebar-left">
+            <h3>Years</h3>
+            <button class="year-btn active" data-year="all">All Years</button>
+            <button class="year-btn" data-year="1997">1997</button>
+            <button class="year-btn" data-year="1998">1998</button>
+            <button class="year-btn" data-year="1999">1999</button>
+            <button class="year-btn" data-year="2000">2000</button>
+            <button class="year-btn" data-year="2001">2001</button>
+            <button class="year-btn" data-year="2002">2002</button>
+            <button class="year-btn" data-year="2003">2003</button>
+            <button class="year-btn" data-year="2004">2004</button>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Filter Controls -->
+            <section class="filters">
+                <!-- Levels Filter -->
+                <div class="filter-group" id="levelFilterGroup">
+                    <div class="filter-label">Levels:</div>
+                    <div class="button-row">
+                        <button class="level-btn active" data-level="all">All</button>
+                        <button class="level-btn" data-level="Baby I">Baby I</button>
+                        <button class="level-btn" data-level="Baby II">Baby II</button>
+                        <button class="level-btn" data-level="Child">Child</button>
+                        <button class="level-btn" data-level="Adult">Adult</button>
+                        <button class="level-btn" data-level="Perfect">Perfect</button>
+                        <button class="level-btn" data-level="Ultimate">Ultimate</button>
+                        <button class="level-btn" data-level="No Profile">No Profile</button>
+                    </div>
+                </div>
+
+                <!-- Attributes Filter -->
+                <div class="filter-group" id="attributeFilterGroup">
+                    <div class="filter-label">Attributes:</div>
+                    <div class="button-row">
+                        <button class="attribute-btn active" data-attribute="all">All</button>
+                        <button class="attribute-btn" data-attribute="Vaccine">Vaccine</button>
+                        <button class="attribute-btn" data-attribute="Data">Data</button>
+                        <button class="attribute-btn" data-attribute="Virus">Virus</button>
+                        <button class="attribute-btn" data-attribute="Free">Free</button>
+                        <button class="attribute-btn" data-attribute="Unknown">Unknown</button>
+                    </div>
+                </div>
+
+                <!-- Special Type Buttons (Armor, Hybrid, X) -->
+                <div class="filter-group" id="specialTypeGroup">
+                    <div class="filter-label">Special Types:</div>
+                    <div class="button-row">
+                        <button class="special-type-btn" data-special="armor">Armor</button>
+                        <button class="special-type-btn" data-special="hybrid">Spirit</button>
+                        <button class="special-type-btn" data-special="x">X-Antibody</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Digimon Grid -->
+            <section class="digimon-grid" id="digimonGrid">
+                <!-- Digimon cards will be dynamically loaded here -->
+            </section>
+        </main>
+    </div>
+
+    <!-- Image Hover Preview -->
+    <div class="image-preview" id="imagePreview">
+        <img src="" alt="" id="previewImage">
+    </div>
+
+    <!-- Favorites Section at Bottom -->
+    <section class="favorites-section">
+        <div class="favorites-header">
+            <h2>Favorite Digimon</h2>
+            <div class="favorites-controls">
+                <button class="save-btn" id="saveBtn">Save Favorites</button>
+                <button class="delete-btn" id="deleteBtn">Delete All</button>
+            </div>
+        </div>
+        
+        <div class="favorites-yearly" id="favoritesYearly">
+            <!-- Yearly favorites will be loaded here -->
+        </div>
+    </section>
+
+    <!-- Right-click Alternative Image Window -->
+    <div class="alternative-window" id="alternativeWindow">
+        <div class="alternative-content">
+            <div class="alternative-grid" id="alternativeGrid">
+                <!-- Alternative image will be loaded here -->
+            </div>
+            <button class="close-btn" onclick="closeAlternativeWindow()">Close</button>
+        </div>
+    </div>
+
+    <script src="data.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
