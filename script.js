@@ -359,7 +359,8 @@ function addToFavorites(e, card) {
 
     if (!digimon) return;
 
-    const year = digimon.year;
+    // Use the currently selected filter year, or the Digimon's year if "All Years" is selected
+    const year = currentFilter.year !== 'all' ? parseInt(currentFilter.year) : digimon.year;
     
     // Check if already in yearly favorites
     if (!yearlyFavorites[year]) {
@@ -383,7 +384,7 @@ function renderFavorites() {
     
     let html = '';
     
-    const years = [1997, 1998, 1999, 2000, 2001];
+    const years = [1997, 1998, 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025];
     
     years.forEach(year => {
         const yearFavorites = yearlyFavorites[year] || [];
@@ -402,6 +403,7 @@ function renderFavorites() {
     });
     
     favoritesYearly.innerHTML = html;
+    // ... rest of the function remains the same
     
     // Add click listeners to yearly favorite slots
     document.querySelectorAll('.yearly-favorite-slot.filled').forEach(slot => {
@@ -472,7 +474,30 @@ function deleteFavorites() {
             1998: [],
             1999: [],
             2000: [],
-            2001: []
+            2001: [],
+            2002: [], 
+            2003: [], 
+            2004: [], 
+            2005: [], 
+            2006: [],
+            2007: [], 
+            2008: [], 
+            2009: [], 
+            2010: [], 
+            2011: [],
+            2012: [], 
+            2013: [], 
+            2014: [], 
+            2015: [], 
+            2016: [],
+            2017: [], 
+            2018: [], 
+            2019: [], 
+            2020: [], 
+            2021: [],
+            2022: [], 
+            2023: [], 
+            2024: [], 2025: []
         };
         localStorage.removeItem('digimonFavorites');
         renderFavorites();
