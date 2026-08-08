@@ -1,5 +1,6 @@
 // generate-digimon-data.js
 const fs = require('fs');
+const path = require('path');
 
 // Your Digimon data (just without IDs)
 const digimonData = [
@@ -1309,38 +1310,38 @@ const digimonData = [
     { name: 'Greymon (Blue) X', level: 'Adult', attribute: 'Virus', image: 'https://wikimon.net/images/d/dc/Greymon_bluex.jpg', altImage: 'https://wikimon.net/images/c/c0/Dcg-BT11-064.jpg', type: 'x' },
 ];
 
-// Validate data
-if (digimonData.length === 0) {
-    console.error('❌ Error: No Digimon data found!');
+try {
+    // Read your source data file (create a digimon-source.json first)
+    const sourceFile = path.join(__dirname, 'digimon-source.json');
+    
+    if (!fs.existsSync(sourceFile)) {
+        console.error('❌ Error: digimon-source.json not found!');
+        console.error('Create a file named digimon-source.json with your Digimon data as a JSON array');
+        process.exit(1);
+    }
+
+    const rawData = fs.readFileSync(sourceFile, 'utf8');
+    const digimonArray = JSON.parse(rawData);
+
+    if (!Array.isArray(digimonArray)) {
+        throw new Error('Data must be a JSON array');
+    }
+
+    // Add IDs
+    const withIds = digimonArray.map((digimon, index) => ({
+        id: index + 1,
+        ...digimon
+    }));
+
+    // Create data.js
+    const output = `const digimonDatabase = ${JSON.stringify(withIds, null, 2)};`;
+    fs.writeFileSync('data.js', output, 'utf8');
+
+    console.log('✅ Success!');
+    console.log(`📊 Generated ${withIds.length} Digimon with IDs 1-${withIds.length}`);
+    console.log('📄 File: data.js');
+
+} catch (error) {
+    console.error('❌ Error:', error.message);
     process.exit(1);
 }
-
-// Auto-assign IDs as NUMBERS (not strings)
-const digimonWithIds = digimonData.map((digimon, index) => ({
-    id: index + 1,  // This creates numbers: 1, 2, 3, etc.
-    ...digimon
-}));
-
-// Validate that all required fields exist
-const requiredFields = ['id', 'name', 'level', 'attribute', 'year', 'image', 'altImage', 'type'];
-const allValid = digimonWithIds.every(digimon => 
-    requiredFields.every(field => digimon[field] !== undefined)
-);
-
-if (!allValid) {
-    console.error('❌ Error: Some Digimon are missing required fields!');
-    console.error('Required fields:', requiredFields);
-    process.exit(1);
-}
-
-// Generate the JavaScript file with proper formatting
-const jsContent = `const digimonDatabase = ${JSON.stringify(digimonWithIds, null, 2)};`;
-
-// Write to file
-fs.writeFileSync('data.js', jsContent);
-
-console.log(`✅ Successfully generated data.js!`);
-console.log(`📊 Total Digimon: ${digimonWithIds.length}`);
-console.log(`🆔 ID Range: 1 - ${digimonWithIds.length}`);
-console.log(`\n📋 First entry:`);
-console.log(digimonWithIds[0]);
