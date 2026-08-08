@@ -3,125 +3,351 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Digimon Favorites Selector</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>Digimon ID Generator</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            padding: 30px;
+            background: linear-gradient(135deg, #1A1A2E 0%, #2D2D4E 100%);
+            color: white;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        h1 {
+            color: #FFB300;
+            margin-bottom: 10px;
+            font-size: 32px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        
+        .subtitle {
+            color: #1E88E5;
+            margin-bottom: 25px;
+            font-size: 14px;
+        }
+        
+        .instructions {
+            background: rgba(123, 31, 162, 0.2);
+            border-left: 5px solid #7B1FA2;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            line-height: 1.8;
+        }
+        
+        .instructions ol {
+            margin-left: 20px;
+        }
+        
+        .instructions li {
+            margin-bottom: 10px;
+        }
+        
+        .editor-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+        
+        .editor-group {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .editor-group h2 {
+            color: #FFB300;
+            margin-bottom: 10px;
+            font-size: 16px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        textarea {
+            width: 100%;
+            height: 400px;
+            padding: 15px;
+            font-family: 'Courier New', monospace;
+            background: #0a0a0a;
+            color: #00ff00;
+            border: 2px solid #1E88E5;
+            border-radius: 8px;
+            font-size: 13px;
+            resize: vertical;
+        }
+        
+        textarea:focus {
+            outline: none;
+            border-color: #FFB300;
+            box-shadow: 0 0 10px rgba(255, 179, 0, 0.3);
+        }
+        
+        .button-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+        }
+        
+        button {
+            padding: 12px 24px;
+            background: #E53935;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 14px;
+            text-transform: uppercase;
+            transition: all 0.3s ease;
+        }
+        
+        button:hover {
+            background: #C62828;
+            transform: scale(1.05);
+            box-shadow: 0 4px 12px rgba(229, 57, 53, 0.4);
+        }
+        
+        button:active {
+            transform: scale(0.98);
+        }
+        
+        .btn-secondary {
+            background: #1E88E5;
+        }
+        
+        .btn-secondary:hover {
+            background: #1565C0;
+        }
+        
+        .btn-success {
+            background: #43A047;
+        }
+        
+        .btn-success:hover {
+            background: #2E7D32;
+        }
+        
+        .message {
+            padding: 15px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            display: none;
+            font-weight: 600;
+        }
+        
+        .message.success {
+            background: rgba(67, 160, 71, 0.2);
+            color: #81C784;
+            border-left: 4px solid #43A047;
+            display: block;
+        }
+        
+        .message.error {
+            background: rgba(229, 57, 53, 0.2);
+            color: #EF5350;
+            border-left: 4px solid #E53935;
+            display: block;
+        }
+        
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .stat-box {
+            background: rgba(30, 136, 229, 0.2);
+            border: 2px solid #1E88E5;
+            padding: 15px;
+            border-radius: 6px;
+            text-align: center;
+        }
+        
+        .stat-number {
+            font-size: 24px;
+            font-weight: 700;
+            color: #FFB300;
+        }
+        
+        .stat-label {
+            font-size: 12px;
+            color: #B0BEC5;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 5px;
+        }
+        
+        @media (max-width: 768px) {
+            .editor-section {
+                grid-template-columns: 1fr;
+            }
+            
+            .button-group {
+                flex-direction: column;
+            }
+            
+            button {
+                width: 100%;
+            }
+            
+            .stats {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
 </head>
 <body>
     <div class="container">
-        <!-- Left Sidebar - Years Filter -->
-        <aside class="sidebar-left">
-            <h3>Years</h3>
-            <button class="year-btn active" data-year="all">All Years</button>
-            <button class="year-btn" data-year="1997">1997</button>
-            <button class="year-btn" data-year="1998">1998</button>
-            <button class="year-btn" data-year="1999">1999</button>
-            <button class="year-btn" data-year="2000">2000</button>
-            <button class="year-btn" data-year="2001">2001</button>
-            <button class="year-btn" data-year="2002">2002</button>
-            <button class="year-btn" data-year="2003">2003</button>
-            <button class="year-btn" data-year="2004">2004</button>
-            <button class="year-btn" data-year="2005">2005</button>
-            <button class="year-btn" data-year="2006">2006</button>
-            <button class="year-btn" data-year="2007">2007</button>
-            <button class="year-btn" data-year="2008">2008</button>
-            <button class="year-btn" data-year="2009">2009</button>
-            <button class="year-btn" data-year="2010">2010</button>
-            <button class="year-btn" data-year="2011">2011</button>
-            <button class="year-btn" data-year="2012">2012</button>
-            <button class="year-btn" data-year="2013">2013</button>
-            <button class="year-btn" data-year="2014">2014</button>
-            <button class="year-btn" data-year="2015">2015</button>
-            <button class="year-btn" data-year="2016">2016</button>
-            <button class="year-btn" data-year="2017">2017</button>
-            <button class="year-btn" data-year="2018">2018</button>
-            <button class="year-btn" data-year="2019">2019</button>
-            <button class="year-btn" data-year="2020">2020</button>
-            <button class="year-btn" data-year="2021">2021</button>
-            <button class="year-btn" data-year="2022">2022</button>
-            <button class="year-btn" data-year="2023">2023</button>
-            <button class="year-btn" data-year="2024">2024</button>
-            <button class="year-btn" data-year="2025">2025</button>
-        </aside>
-
-        <!-- Main Content -->
-        <main class="main-content">
-            <!-- Filter Controls -->
-            <section class="filters">
-                <!-- Levels Filter -->
-                <div class="filter-group" id="levelFilterGroup">
-                    <div class="filter-label">Levels:</div>
-                    <div class="button-row">
-                        <button class="level-btn active" data-level="all">All</button>
-                        <button class="level-btn" data-level="Baby I">Baby I</button>
-                        <button class="level-btn" data-level="Baby II">Baby II</button>
-                        <button class="level-btn" data-level="Child">Child</button>
-                        <button class="level-btn" data-level="Adult">Adult</button>
-                        <button class="level-btn" data-level="Perfect">Perfect</button>
-                        <button class="level-btn" data-level="Ultimate">Ultimate</button>
-                    </div>
-                </div>
-
-                <!-- Attributes Filter -->
-                <div class="filter-group" id="attributeFilterGroup">
-                    <div class="filter-label">Attributes:</div>
-                    <div class="button-row">
-                        <button class="attribute-btn active" data-attribute="all">All</button>
-                        <button class="attribute-btn" data-attribute="Vaccine">Vaccine</button>
-                        <button class="attribute-btn" data-attribute="Data">Data</button>
-                        <button class="attribute-btn" data-attribute="Virus">Virus</button>
-                        <button class="attribute-btn" data-attribute="Free">Free</button>
-                        <button class="attribute-btn" data-attribute="Unknown">Unknown</button>
-                    </div>
-                </div>
-
-                <!-- Special Type Buttons (Armor, Hybrid, X) -->
-                <div class="filter-group" id="specialTypeGroup">
-                    <div class="filter-label">Special Types:</div>
-                    <div class="button-row">
-                        <button class="special-type-btn" data-special="armor">Armor</button>
-                        <button class="special-type-btn" data-special="hybrid">Spirit</button>
-                        <button class="special-type-btn" data-special="x">X-Evolution</button>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Digimon Grid -->
-            <section class="digimon-grid" id="digimonGrid">
-                <!-- Digimon cards will be dynamically loaded here -->
-            </section>
-        </main>
-    </div>
-
-    <!-- Image Hover Preview -->
-    <div class="image-preview" id="imagePreview">
-        <img src="" alt="" id="previewImage">
-    </div>
-
-    <!-- Favorites Section at Bottom -->
-    <section class="favorites-section">
-        <div class="favorites-header">
-            <h2>Your Favorite Digimon by Year</h2>
-            <div class="favorites-controls">
-                <button class="delete-btn" id="deleteBtn">Delete All</button>
+        <h1>🎮 Digimon ID Generator</h1>
+        <p class="subtitle">Automatically assign sequential IDs to all your Digimon</p>
+        
+        <div class="instructions">
+            <strong>📋 How to use:</strong>
+            <ol>
+                <li>Paste your Digimon data as a <strong>JSON array</strong> in the <strong>Input</strong> textarea (without IDs)</li>
+                <li>Click <strong>"Generate IDs"</strong></li>
+                <li>Copy the output from the <strong>Output</strong> textarea</li>
+                <li>Replace the contents of your <strong>data.js</strong> file with the output</li>
+                <li>Save and refresh your page</li>
+            </ol>
+        </div>
+        
+        <div id="message" class="message"></div>
+        
+        <div class="button-group">
+            <button onclick="generateIds()" class="btn-success">✨ Generate IDs</button>
+            <button onclick="copyToClipboard()" class="btn-secondary">📋 Copy Output</button>
+            <button onclick="clearAll()">🗑️ Clear All</button>
+        </div>
+        
+        <div class="stats" id="stats" style="display: none;">
+            <div class="stat-box">
+                <div class="stat-number" id="statCount">0</div>
+                <div class="stat-label">Total Digimon</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-number" id="statStart">1</div>
+                <div class="stat-label">Start ID</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-number" id="statEnd">0</div>
+                <div class="stat-label">End ID</div>
             </div>
         </div>
         
-        <div class="favorites-yearly" id="favoritesYearly">
-            <!-- Yearly favorites will be loaded here -->
-        </div>
-    </section>
-
-    <!-- Right-click Alternative Image Window -->
-    <div class="alternative-window" id="alternativeWindow">
-        <div class="alternative-content">
-            <div class="alternative-grid" id="alternativeGrid">
-                <!-- Alternative image will be loaded here -->
+        <div class="editor-section">
+            <div class="editor-group">
+                <h2>📥 Input (Paste here)</h2>
+                <textarea id="input" placeholder='Paste your JSON array here without IDs:\n[\n  { "name": "Agumon", "level": "Child", "attribute": "Vaccine", "year": 1997, "image": "url", "altImage": "url", "type": "standard" },\n  { "name": "Gabumon", "level": "Child", "attribute": "Data", "year": 1997, "image": "url", "altImage": "url", "type": "standard" }\n]'></textarea>
             </div>
-            <button class="close-btn" onclick="closeAlternativeWindow()">Close</button>
+            
+            <div class="editor-group">
+                <h2>📤 Output (Copy from here)</h2>
+                <textarea id="output" readonly placeholder="Generated output will appear here..."></textarea>
+            </div>
         </div>
     </div>
 
-    <script src="data.js"></script>
-    <script src="script.js"></script>
+    <script>
+        function showMessage(text, type) {
+            const messageEl = document.getElementById('message');
+            messageEl.textContent = text;
+            messageEl.className = 'message ' + type;
+            setTimeout(() => {
+                messageEl.className = 'message';
+            }, 5000);
+        }
+
+        function generateIds() {
+            try {
+                const input = document.getElementById('input').value.trim();
+                
+                if (!input) {
+                    showMessage('❌ Error: Input is empty! Paste your JSON data first.', 'error');
+                    return;
+                }
+
+                // Parse JSON
+                let data;
+                try {
+                    data = JSON.parse(input);
+                } catch (e) {
+                    showMessage(`❌ JSON Parse Error: ${e.message}`, 'error');
+                    return;
+                }
+
+                // Validate it's an array
+                if (!Array.isArray(data)) {
+                    showMessage('❌ Error: Input must be a JSON array (starts with [ and ends with ])', 'error');
+                    return;
+                }
+
+                if (data.length === 0) {
+                    showMessage('❌ Error: Array is empty!', 'error');
+                    return;
+                }
+
+                // Add sequential IDs
+                const withIds = data.map((item, index) => ({
+                    id: index + 1,
+                    ...item
+                }));
+
+                // Generate output
+                const output = `const digimonDatabase = ${JSON.stringify(withIds, null, 2)};`;
+                document.getElementById('output').value = output;
+
+                // Show stats
+                document.getElementById('statCount').textContent = withIds.length;
+                document.getElementById('statStart').textContent = '1';
+                document.getElementById('statEnd').textContent = withIds.length;
+                document.getElementById('stats').style.display = 'grid';
+
+                showMessage(`✅ Success! Generated ${withIds.length} Digimon with IDs 1-${withIds.length}`, 'success');
+            } catch (error) {
+                showMessage(`❌ Error: ${error.message}`, 'error');
+            }
+        }
+
+        function copyToClipboard() {
+            const output = document.getElementById('output');
+            
+            if (!output.value) {
+                showMessage('❌ Error: Nothing to copy! Generate IDs first.', 'error');
+                return;
+            }
+            
+            output.select();
+            document.execCommand('copy');
+            showMessage('✅ Copied to clipboard! Paste into your data.js file.', 'success');
+        }
+
+        function clearAll() {
+            document.getElementById('input').value = '';
+            document.getElementById('output').value = '';
+            document.getElementById('stats').style.display = 'none';
+            document.getElementById('message').className = 'message';
+        }
+
+        // Allow Ctrl+Enter to generate
+        document.getElementById('input').addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' && e.ctrlKey) {
+                generateIds();
+            }
+        });
+    </script>
 </body>
 </html>
