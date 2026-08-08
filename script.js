@@ -7,12 +7,11 @@ let currentFilter = {
 };
 
 let yearlyFavorites = {
-    1997: [], 1998: [], 1999: [], 2000: [], 2001: [],
-    2002: [], 2003: [], 2004: [], 2005: [], 2006: [],
-    2007: [], 2008: [], 2009: [], 2010: [], 2011: [],
-    2012: [], 2013: [], 2014: [], 2015: [], 2016: [],
-    2017: [], 2018: [], 2019: [], 2020: [], 2021: [],
-    2022: [], 2023: [], 2024: [], 2025: []
+    1997: [],
+    1998: [],
+    1999: [],
+    2000: [],
+    2001: []
 };
 
 let currentContextDigimon = null;
@@ -20,8 +19,6 @@ let previewTimeout = null;
 
 // Initialize
 document.addEventListener('DOMContentLoaded', () => {
-    console.log('Page loaded. Database has', digimonDatabase.length, 'Digimon');
-    console.log('First entry:', digimonDatabase[0]);
     loadFavorites();
     renderDigimonGrid();
     setupEventListeners();
@@ -120,7 +117,7 @@ function setupImagePreview() {
                 }
                 
                 preview.style.left = left + 'px';
-                preview.style.top = '40px';
+                preview.style.top = '40px'; // Fixed top position instead of following mouse
                 preview.classList.add('visible');
             }, 300);
         }
@@ -135,6 +132,7 @@ function setupImagePreview() {
 
     document.addEventListener('mousemove', (e) => {
         if (preview.classList.contains('visible')) {
+            // Keep preview at top but follow horizontally
             const previewWidth = 300;
             let left = e.pageX + 15;
             
@@ -340,20 +338,11 @@ function renderDigimonGrid() {
         </div>
     `).join('');
 
-    // Add click listeners to ALL cards
+    // Add click listeners
     document.querySelectorAll('.digimon-card').forEach(card => {
-        card.addEventListener('click', function(e) {
-            const digimonId = parseInt(this.dataset.id);
-            const digimon = digimonDatabase.find(d => d.id === digimonId);
-            
-            if (digimon) {
-                addToFavorites(digimon);
-            } else {
-                console.error('❌ Digimon not found with ID:', digimonId);
-            }
-        });
+        card.addEventListener('click', (e) => addToFavorites(e, card));
         
-        // Context menu for alt image
+        // Add context menu for opening in new tab with alt image
         card.querySelector('img').addEventListener('contextmenu', (e) => {
             e.preventDefault();
             const altUrl = e.target.dataset.altUrl;
@@ -364,36 +353,30 @@ function renderDigimonGrid() {
     });
 }
 
-function addToFavorites(digimon) {
-    if (!digimon || !digimon.id) {
-        console.error('❌ Invalid digimon object:', digimon);
-        return;
-    }
+function addToFavorites(e, card) {
+    const digimonId = parseInt(card.dataset.id);
+    const digimon = digimonDatabase.find(d => d.id === digimonId);
 
-    // Use current filter year, or the Digimon's year if "All Years" is selected
+    if (!digimon) return;
+
+    // Use the currently selected filter year, or the Digimon's year if "All Years" is selected
     const year = currentFilter.year !== 'all' ? parseInt(currentFilter.year) : digimon.year;
     
-    // Initialize year array if it doesn't exist
+    // Check if already in yearly favorites
     if (!yearlyFavorites[year]) {
         yearlyFavorites[year] = [];
     }
     
     // Max 12 per year
-    if (yearlyFavorites[year].length >= 12) {
+    if (yearlyFavorites[year].length < 12) {
+        if (!yearlyFavorites[year].includes(digimonId)) {
+            yearlyFavorites[year].push(digimonId);
+            renderFavorites();
+        }
+    } else {
         alert('You can only select 12 Digimon per year!');
         return;
     }
-    
-    // Check if already in favorites
-    if (yearlyFavorites[year].includes(digimon.id)) {
-        alert(`${digimon.name} is already in your favorites for ${year}!`);
-        return;
-    }
-    
-    // Add to favorites
-    yearlyFavorites[year].push(digimon.id);
-    renderFavorites();
-    console.log(`✅ Added ${digimon.name} (ID: ${digimon.id}) to favorites for year ${year}`);
 }
 
 function renderFavorites() {
@@ -420,13 +403,14 @@ function renderFavorites() {
     });
     
     favoritesYearly.innerHTML = html;
+    // ... rest of the function remains the same
     
     // Add click listeners to yearly favorite slots
     document.querySelectorAll('.yearly-favorite-slot.filled').forEach(slot => {
-        slot.addEventListener('click', function(e) {
+        slot.addEventListener('click', (e) => {
             e.preventDefault();
-            const year = parseInt(this.dataset.year);
-            const digimonId = parseInt(this.dataset.digimonId);
+            const year = parseInt(slot.dataset.year);
+            const digimonId = parseInt(slot.dataset.digimonId);
             
             // Remove from favorites
             yearlyFavorites[year] = yearlyFavorites[year].filter(id => id !== digimonId);
@@ -434,7 +418,7 @@ function renderFavorites() {
             renderFavorites();
         });
         
-        // Context menu for alt image
+        // Add context menu for images in yearly section
         const img = slot.querySelector('img');
         if (img) {
             img.addEventListener('contextmenu', (e) => {
@@ -486,12 +470,34 @@ function closeAlternativeWindow() {
 function deleteFavorites() {
     if (confirm('Are you sure you want to delete all favorites?')) {
         yearlyFavorites = {
-            1997: [], 1998: [], 1999: [], 2000: [], 2001: [],
-            2002: [], 2003: [], 2004: [], 2005: [], 2006: [],
-            2007: [], 2008: [], 2009: [], 2010: [], 2011: [],
-            2012: [], 2013: [], 2014: [], 2015: [], 2016: [],
-            2017: [], 2018: [], 2019: [], 2020: [], 2021: [],
-            2022: [], 2023: [], 2024: [], 2025: []
+            1997: [],
+            1998: [],
+            1999: [],
+            2000: [],
+            2001: [],
+            2002: [], 
+            2003: [], 
+            2004: [], 
+            2005: [], 
+            2006: [],
+            2007: [], 
+            2008: [], 
+            2009: [], 
+            2010: [], 
+            2011: [],
+            2012: [], 
+            2013: [], 
+            2014: [], 
+            2015: [], 
+            2016: [],
+            2017: [], 
+            2018: [], 
+            2019: [], 
+            2020: [], 
+            2021: [],
+            2022: [], 
+            2023: [], 
+            2024: [], 2025: []
         };
         localStorage.removeItem('digimonFavorites');
         renderFavorites();
